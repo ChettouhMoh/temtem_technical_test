@@ -1,5 +1,14 @@
 import { Product } from '@product/domain/product';
 
+// Request DTO
+export class GetAllProductsRequest {
+  page: number;
+  limit: number;
+  category?: string;
+  sortOrder?: 'asc' | 'desc';
+}
+
+// Response DTO
 interface ProductItem {
   id: string;
   name: string;
