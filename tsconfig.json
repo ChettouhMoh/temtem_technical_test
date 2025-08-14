@@ -18,7 +18,7 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@products/*": ["src/products/*"],
+      "@product/*": ["src/product/*"],
       "@persistence/*": ["src/persistence/*"]
     }
   }
