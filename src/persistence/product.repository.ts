@@ -49,7 +49,17 @@ export class ProductRepositoryInMemory implements IProductRepository {
   ];
 
   save(product: Product): Promise<void> {
-    this.products.push(product);
+    // Check if the product already exists
+    const existingProductIndex = this.products.findIndex(
+      (p) => p.id === product.id,
+    );
+    if (existingProductIndex !== -1) {
+      // Update existing product
+      this.products[existingProductIndex] = product;
+    } else {
+      // Add new product
+      this.products.push(product);
+    }
     return Promise.resolve();
   }
 
@@ -82,5 +92,10 @@ export class ProductRepositoryInMemory implements IProductRepository {
     const endIndex = startIndex + limit;
 
     return Promise.resolve(filteredProducts.slice(startIndex, endIndex));
+  }
+
+  findById(id: string): Promise<Product | null> {
+    const product = this.products.find((product) => product.id === id);
+    return Promise.resolve(product || null);
   }
 }

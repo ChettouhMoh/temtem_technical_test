@@ -25,6 +25,33 @@ export class Product {
     return new Product(props);
   }
 
+  // --- Domain behaviors (update methods) ---
+  public updateName(name: string) {
+    if (!name || name.trim().length === 0) {
+      throw new Error('Product name cannot be empty');
+    }
+    this.props.name = name;
+  }
+
+  public updateDescription(description: string) {
+    this.props.description = description;
+  }
+
+  public updatePrice(price: number) {
+    if (price <= 0) {
+      throw new Error('Price must be greater than zero');
+    }
+    this.props.price = price;
+  }
+
+  public updateCategory(category: string) {
+    this.props.category = category;
+  }
+
+  public updateImage(image: string) {
+    this.props.image = image;
+  }
+
   // Getters
   get id(): UUID {
     return this._id;
