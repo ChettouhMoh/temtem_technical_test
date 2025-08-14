@@ -1,6 +1,6 @@
-import { IProductRepository } from 'src/product/ports/product.repository.interface';
+import { IProductRepository } from '../../ports/product.repository.interface';
 import { CreateProductDto } from './create-product.dto';
-import { Product } from 'src/product/domain/product';
+import { Product } from '../../domain/product';
 import { Controller, Inject, Post, Body } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';
 
