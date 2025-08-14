@@ -1,4 +1,11 @@
-import { Controller, Get, Inject, Query } from '@nestjs/common';
+import {
+  Controller,
+  DefaultValuePipe,
+  Get,
+  Inject,
+  ParseIntPipe,
+  Query,
+} from '@nestjs/common';
 import { IProductRepository } from '@product/ports/product.repository.interface';
 import { ApiTags, ApiOperation, ApiResponse, ApiQuery } from '@nestjs/swagger';
 import { Product } from '@product/domain/product';
@@ -53,13 +60,16 @@ export class GetAllProducts {
     example: 'asc',
   })
   async execute(
-    @Query() query: GetAllProductsRequest = { page: 1, limit: 10 },
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number,
+    @Query('category') category?: string,
+    @Query('sortOrder') sortOrder?: 'asc' | 'desc',
   ): Promise<GetAllProductsResponse> {
     const items = await this.productRepository.getAll(
-      query.page,
-      query.limit,
-      query.category,
-      query.sortOrder,
+      page,
+      limit,
+      category,
+      sortOrder,
     );
     return GetAllProductsResponse.from(items);
   }
