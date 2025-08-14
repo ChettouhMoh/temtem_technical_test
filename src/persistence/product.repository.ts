@@ -10,4 +10,8 @@ export class ProductRepositoryInMemory implements IProductRepository {
     this.products.push(product);
     return Promise.resolve();
   }
+
+  getAll(): Promise<Product[]> {
+    return Promise.resolve(this.products);
+  }
 }
