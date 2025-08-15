@@ -1,15 +1,31 @@
-import { Inject, NotFoundException } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Inject,
+  NotFoundException,
+  Param,
+  Put,
+} from '@nestjs/common';
 import { IProductRepository } from '@product/ports/product.repository.interface';
 import { UpdateProductRequest } from './update-product.dto';
+import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Products')
+@Controller('products')
 export class UpdateProduct {
   constructor(
     @Inject(IProductRepository)
     private readonly productRepository: IProductRepository,
   ) {}
 
-  async execute(request: UpdateProductRequest): Promise<void> {
-    const product = await this.productRepository.findById(request.id);
+  @Put(':id')
+  @ApiOperation({ summary: 'Update a product by ID' })
+  @ApiParam({ name: 'id', type: String, description: 'The ID of the product' })
+  async execute(
+    @Param('id') id: string,
+    @Body() request: UpdateProductRequest,
+  ): Promise<void> {
+    const product = await this.productRepository.findById(id);
     if (!product) {
       throw new NotFoundException('Product not found');
     }
@@ -30,6 +46,6 @@ export class UpdateProduct {
       product.updateImage(request.image);
     }
 
-    await this.productRepository.save(product);
+    await this.productRepository.update(id, product);
   }
 }

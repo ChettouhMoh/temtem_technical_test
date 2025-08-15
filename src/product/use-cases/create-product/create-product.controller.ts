@@ -26,6 +26,6 @@ export class CreateProduct {
       image: createProductDto.image,
     });
 
-    this.productRepository.save(product);
+    this.productRepository.create(product);
   }
 }

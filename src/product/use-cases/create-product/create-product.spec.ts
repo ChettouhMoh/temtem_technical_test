@@ -3,16 +3,15 @@ import { CreateProduct } from './create-product.controller';
 import { CreateProductDto } from './create-product.dto';
 import { Product } from '../../domain/product';
 import { IProductRepository } from '../../ports/product.repository.interface';
+import { createMock } from '@golevelup/ts-jest';
 
 describe('CreateProduct Controller', () => {
   let controller: CreateProduct;
   let productRepository: jest.Mocked<IProductRepository>;
 
   beforeEach(async () => {
-    const mockProductRepository: jest.Mocked<IProductRepository> = {
-      save: jest.fn(),
-      // Add other methods if your interface has more
-    };
+    const mockProductRepository: jest.Mocked<IProductRepository> =
+      createMock<IProductRepository>();
 
     const module: TestingModule = await Test.createTestingModule({
       controllers: [CreateProduct],
@@ -39,10 +38,10 @@ describe('CreateProduct Controller', () => {
 
     await controller.execute(dto);
 
-    expect(productRepository.save).toHaveBeenCalledTimes(1);
+    expect(productRepository.create).toHaveBeenCalledTimes(1);
 
     // Check that the saved product is a Product instance with correct values
-    const savedProduct = productRepository.save.mock.calls[0][0];
+    const savedProduct = productRepository.create.mock.calls[0][0];
     expect(savedProduct).toBeInstanceOf(Product);
     expect(savedProduct.name).toBe(dto.name);
     expect(savedProduct.price).toBe(dto.price);

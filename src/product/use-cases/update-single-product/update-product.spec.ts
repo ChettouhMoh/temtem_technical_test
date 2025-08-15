@@ -2,6 +2,7 @@ import { NotFoundException } from '@nestjs/common';
 import { IProductRepository } from '@product/ports/product.repository.interface';
 import { Product } from '@product/domain/product';
 import { UpdateProduct } from './update-product.controller';
+import { createMock } from '@golevelup/ts-jest';
 
 // Utility for creating fake product props
 const makeProductProps = () => ({
@@ -18,16 +19,10 @@ describe('UpdateProduct', () => {
   let existingProduct: Product;
 
   beforeEach(() => {
-    // mock repository
-    productRepository = {
-      findById: jest.fn(),
-      save: jest.fn(),
-      getAll: jest.fn(),
-    };
+    productRepository = createMock<IProductRepository>();
 
     updateProduct = new UpdateProduct(productRepository);
 
-    // create a real Product instance
     existingProduct = Product.restoreExisting(
       makeProductProps(),
       'uuid-1234' as any,
@@ -38,24 +33,26 @@ describe('UpdateProduct', () => {
     productRepository.findById.mockResolvedValue(null);
 
     await expect(
-      updateProduct.execute({ id: 'uuid-1234' as any, name: 'New Name' }),
+      updateProduct.execute('uuid-1234', { name: 'New Name' }),
     ).rejects.toThrow(NotFoundException);
   });
 
-  it('should update product name and save', async () => {
+  it('should update product name and call repository.update with id + product', async () => {
     productRepository.findById.mockResolvedValue(existingProduct);
 
-    await updateProduct.execute({ id: existingProduct.id, name: 'New Name' });
+    await updateProduct.execute(existingProduct.id, { name: 'New Name' });
 
     expect(existingProduct.name).toBe('New Name');
-    expect(productRepository.save).toHaveBeenCalledWith(existingProduct);
+    expect(productRepository.update).toHaveBeenCalledWith(
+      existingProduct.id,
+      existingProduct,
+    );
   });
 
-  it('should update multiple fields', async () => {
+  it('should update multiple fields and call repository.update with id + product', async () => {
     productRepository.findById.mockResolvedValue(existingProduct);
 
-    await updateProduct.execute({
-      id: existingProduct.id,
+    await updateProduct.execute(existingProduct.id, {
       name: 'New Name',
       description: 'New Description',
       price: 200,
@@ -68,14 +65,17 @@ describe('UpdateProduct', () => {
     expect(existingProduct.price).toBe(200);
     expect(existingProduct.category).toBe('New Category');
     expect(existingProduct.image).toBe('new.png');
-    expect(productRepository.save).toHaveBeenCalledWith(existingProduct);
+    expect(productRepository.update).toHaveBeenCalledWith(
+      existingProduct.id,
+      existingProduct,
+    );
   });
 
   it('should throw error when updating with invalid price', async () => {
     productRepository.findById.mockResolvedValue(existingProduct);
 
     await expect(
-      updateProduct.execute({ id: existingProduct.id, price: -50 }),
+      updateProduct.execute(existingProduct.id, { price: -50 }),
     ).rejects.toThrow('Price must be greater than zero');
   });
 
@@ -83,7 +83,7 @@ describe('UpdateProduct', () => {
     productRepository.findById.mockResolvedValue(existingProduct);
 
     await expect(
-      updateProduct.execute({ id: existingProduct.id, name: '' }),
+      updateProduct.execute(existingProduct.id, { name: '' }),
     ).rejects.toThrow('Product name cannot be empty');
   });
 });

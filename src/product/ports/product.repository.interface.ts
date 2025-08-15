@@ -2,7 +2,7 @@ import { Product } from '../domain/product';
 type SortOrder = 'asc' | 'desc';
 
 export interface IProductRepository {
-  save(product: Product): Promise<void>;
+  create(product: Product): Promise<void>;
 
   getAll(
     page: number,
@@ -12,6 +12,8 @@ export interface IProductRepository {
   ): Promise<Product[]>;
 
   findById(id: string): Promise<Product | null>;
+
+  update(id: string, product: Partial<Product>): Promise<void>;
 }
 
 export const IProductRepository = Symbol('IProductRepository');

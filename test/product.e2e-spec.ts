@@ -5,16 +5,15 @@ import * as request from 'supertest';
 import { IProductRepository } from '@product/ports/product.repository.interface';
 import { GetAllProducts } from '@product/use-cases/get-all-products/get-all-products.controller';
 import { Product } from '@product/domain/product';
+import { createMock } from '@golevelup/ts-jest';
 
-describe('GetAllProductsController (e2e)', () => {
+describe('Get All Products (e2e)', () => {
   let app: INestApplication;
   let productRepository: jest.Mocked<IProductRepository>;
 
   beforeAll(async () => {
-    const mockProductRepository: jest.Mocked<IProductRepository> = {
-      getAll: jest.fn(),
-      save: jest.fn(),
-    };
+    const mockProductRepository: jest.Mocked<IProductRepository> =
+      createMock<IProductRepository>();
 
     const moduleFixture: TestingModule = await Test.createTestingModule({
       controllers: [GetAllProducts],

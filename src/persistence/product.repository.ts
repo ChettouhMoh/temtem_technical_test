@@ -48,18 +48,10 @@ export class ProductRepositoryInMemory implements IProductRepository {
     ),
   ];
 
-  save(product: Product): Promise<void> {
-    // Check if the product already exists
-    const existingProductIndex = this.products.findIndex(
-      (p) => p.id === product.id,
-    );
-    if (existingProductIndex !== -1) {
-      // Update existing product
-      this.products[existingProductIndex] = product;
-    } else {
-      // Add new product
-      this.products.push(product);
-    }
+  create(product: Product): Promise<void> {
+    // removed the old logic, now this function is only responsible for saving a new product
+    // no upsert logic
+    this.products.push(product);
     return Promise.resolve();
   }
 
@@ -97,5 +89,15 @@ export class ProductRepositoryInMemory implements IProductRepository {
   findById(id: string): Promise<Product | null> {
     const product = this.products.find((product) => product.id === id);
     return Promise.resolve(product || null);
+  }
+
+  update(id: string, product: Partial<Product>): Promise<void> {
+    const existingProductIndex = this.products.findIndex((p) => p.id === id);
+
+    const existingProduct = this.products[existingProductIndex];
+    const updatedProduct = Object.assign(existingProduct, product);
+    this.products[existingProductIndex] = updatedProduct;
+
+    return Promise.resolve();
   }
 }
