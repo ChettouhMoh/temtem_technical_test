@@ -19,7 +19,8 @@
     "noFallthroughCasesInSwitch": false,
     "paths": {
       "@product/*": ["src/product/*"],
-      "@persistence/*": ["src/persistence/*"]
+      "@persistence/*": ["src/persistence/*"],
+      "@auth/*": ["src/auth/*"]
     }
   }
 }

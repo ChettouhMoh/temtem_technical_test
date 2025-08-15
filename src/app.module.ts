@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
 import { ProductManagementModule } from './product/product.module';
 import { PersistenceModule } from './persistence/persistence.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [ProductManagementModule, PersistenceModule],
+  imports: [ProductManagementModule, PersistenceModule, AuthModule],
 })
 export class AppModule {}
