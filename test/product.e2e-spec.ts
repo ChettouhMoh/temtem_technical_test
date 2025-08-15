@@ -1,13 +1,14 @@
-// test/get-all-products.e2e-spec.ts
+// test/products.e2e-spec.ts
 import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
+import { INestApplication, BadRequestException } from '@nestjs/common';
 import * as request from 'supertest';
 import { IProductRepository } from '@product/ports/product.repository.interface';
 import { GetAllProducts } from '@product/use-cases/get-all-products/get-all-products.controller';
+import { DeleteProduct } from '@product/use-cases/delete-product/delete-product.controller';
 import { Product } from '@product/domain/product';
 import { createMock } from '@golevelup/ts-jest';
 
-describe('Get All Products (e2e)', () => {
+describe('Products (e2e)', () => {
   let app: INestApplication;
   let productRepository: jest.Mocked<IProductRepository>;
 
@@ -16,7 +17,7 @@ describe('Get All Products (e2e)', () => {
       createMock<IProductRepository>();
 
     const moduleFixture: TestingModule = await Test.createTestingModule({
-      controllers: [GetAllProducts],
+      controllers: [GetAllProducts, DeleteProduct],
       providers: [
         {
           provide: IProductRepository,
@@ -35,6 +36,7 @@ describe('Get All Products (e2e)', () => {
     await app.close();
   });
 
+  // -------------------- GET /products --------------------
   it('/products (GET) should return products with pagination defaults', async () => {
     const products = [
       Product.createNew({
@@ -96,5 +98,31 @@ describe('Get All Products (e2e)', () => {
     );
     expect(response.body.items).toHaveLength(1);
     expect(response.body.items[0].name).toBe('TV');
+  });
+
+  // -------------------- DELETE /products/:id --------------------
+  it('/products/:id (DELETE) should delete a product successfully', async () => {
+    const productId = '123';
+
+    productRepository.delete.mockResolvedValue();
+
+    await request(app.getHttpServer())
+      .delete(`/products/${productId}`)
+      .expect(200);
+
+    expect(productRepository.delete).toHaveBeenCalledWith(productId);
+  });
+
+  it('/products/:id (DELETE) should propagate repository errors', async () => {
+    const productId = '456';
+    const error = new Error('Database error');
+
+    productRepository.delete.mockRejectedValue(error);
+
+    await request(app.getHttpServer())
+      .delete(`/products/${productId}`)
+      .expect(404);
+
+    expect(productRepository.delete).toHaveBeenCalledWith(productId);
   });
 });

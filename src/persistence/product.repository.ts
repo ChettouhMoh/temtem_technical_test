@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { randomUUID } from 'crypto';
 import { Product } from 'src/product/domain/product';
 import { IProductRepository } from 'src/product/ports/product.repository.interface';
@@ -98,6 +98,15 @@ export class ProductRepositoryInMemory implements IProductRepository {
     const updatedProduct = Object.assign(existingProduct, product);
     this.products[existingProductIndex] = updatedProduct;
 
+    return Promise.resolve();
+  }
+
+  delete(id: string): Promise<void> {
+    const productIndex = this.products.findIndex((p) => p.id === id);
+    if (productIndex === -1) {
+      return Promise.reject(new Error('Product not found'));
+    }
+    this.products.splice(productIndex, 1);
     return Promise.resolve();
   }
 }

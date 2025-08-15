@@ -14,6 +14,8 @@ export interface IProductRepository {
   findById(id: string): Promise<Product | null>;
 
   update(id: string, product: Partial<Product>): Promise<void>;
+
+  delete(id: string): Promise<void>;
 }
 
 export const IProductRepository = Symbol('IProductRepository');
