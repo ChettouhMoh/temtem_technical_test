@@ -73,6 +73,11 @@ export class User {
     this.props = props;
   }
 
+  public verifyPassword(plainTextPassword: string): boolean {
+    const hash = PasswordHash.fromPlainText(plainTextPassword);
+    return this.props.passwordHash.value === hash.value;
+  }
+
   public static restoreExisting(props: UserPayload, id: string): User {
     return new User(
       {

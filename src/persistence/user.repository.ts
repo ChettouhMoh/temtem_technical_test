@@ -7,4 +7,9 @@ export class UserRepositoryInMemory implements IUserRepository {
   async save(user: User): Promise<void> {
     this.users.set(user.id, user);
   }
+
+  findByEmail(email: string): Promise<User | null> {
+    const user = Array.from(this.users.values()).find((u) => u.email === email);
+    return Promise.resolve(user || null);
+  }
 }
