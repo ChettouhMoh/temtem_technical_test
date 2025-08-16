@@ -16,6 +16,7 @@ interface ProductItem {
   price: number;
   category: string;
   image: string;
+  imageKey: string;
 }
 
 export class GetAllProductsResponse {
@@ -30,6 +31,7 @@ export class GetAllProductsResponse {
       price: item.price,
       category: item.category,
       image: item.image,
+      imageKey: item.imageKey,
     }));
     return response;
   }

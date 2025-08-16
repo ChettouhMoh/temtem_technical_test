@@ -34,6 +34,7 @@ describe('CreateProduct Controller', () => {
       price: 10,
       category: 'Testing',
       image: 'https://example.com/test.jpg',
+      imageKey: 'products/image',
     };
 
     await controller.execute(dto);

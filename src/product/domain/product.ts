@@ -6,17 +6,19 @@ interface ProductProps {
   price: Price;
   category: string;
   image: string;
+  imageKey: string;
 }
 
-interface ProductPayload {
+export interface ProductPayload {
   name: string;
   description: string;
   price: number;
   category: string;
   image: string;
+  imageKey: string;
 }
 
-class ProductDescription {
+export class ProductDescription {
   private readonly _value: string;
 
   constructor(value: string) {
@@ -33,7 +35,7 @@ class ProductDescription {
   }
 }
 
-class Price {
+export class Price {
   private readonly _value: number;
   constructor(value: number) {
     if (value <= 0) {
@@ -64,6 +66,7 @@ export class Product {
         price: new Price(props.price),
         category: props.category,
         image: props.image,
+        imageKey: props.imageKey,
       },
       id,
     );
@@ -76,6 +79,7 @@ export class Product {
       price: new Price(props.price),
       category: props.category,
       image: props.image,
+      imageKey: props.imageKey,
     });
   }
 
@@ -102,6 +106,9 @@ export class Product {
   public updateImage(image: string) {
     this.props.image = image;
   }
+  public updateImageKey(imageKey: string) {
+    this.props.imageKey = imageKey;
+  }
 
   // Getters
   get id(): UUID {
@@ -126,5 +133,9 @@ export class Product {
 
   get image(): string {
     return this.props.image;
+  }
+
+  get imageKey(): string {
+    return this.props.imageKey;
   }
 }

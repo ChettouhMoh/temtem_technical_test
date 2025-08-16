@@ -4,4 +4,5 @@ export class UpdateProductRequest {
   price?: number;
   category?: string;
   image?: string;
+  imageKey?: string;
 }

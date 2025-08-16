@@ -30,4 +30,10 @@ export class CreateProductDto {
     example: 'https://example.com/images/mouse.jpg',
   })
   image: string;
+
+  @ApiProperty({
+    description: 'image key for updates',
+    example: 'products/imageKey',
+  })
+  imageKey: string;
 }

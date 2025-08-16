@@ -7,6 +7,7 @@ import { GetAllProducts } from '@product/use-cases/get-all-products/get-all-prod
 import { DeleteProduct } from '@product/use-cases/delete-product/delete-product.controller';
 import { Product } from '@product/domain/product';
 import { createMock } from '@golevelup/ts-jest';
+import { mock_Product } from '@product/domain/product.mock';
 
 describe('Products (e2e)', () => {
   let app: INestApplication;
@@ -39,20 +40,10 @@ describe('Products (e2e)', () => {
   // -------------------- GET /products --------------------
   it('/products (GET) should return products with pagination defaults', async () => {
     const products = [
-      Product.createNew({
-        name: 'Phone',
-        description: 'Smartphone',
-        price: 699,
-        category: 'Electronics',
-        image: 'https://example.com/phone.jpg',
-      }),
-      Product.createNew({
-        name: 'Laptop',
-        description: 'Gaming laptop',
-        price: 1299,
-        category: 'Electronics',
-        image: 'https://example.com/laptop.jpg',
-      }),
+      mock_Product(),
+      mock_Product({ name: 'Phone', price: 699 }),
+      mock_Product({ name: 'Phone', price: 322 }),
+      mock_Product({ name: 'Laptop', price: 322 }),
     ];
 
     productRepository.getAll.mockResolvedValue(products);
@@ -80,6 +71,7 @@ describe('Products (e2e)', () => {
         price: 1500,
         category: 'Electronics',
         image: 'https://example.com/tv.jpg',
+        imageKey: 'products/imageKey',
       }),
     ];
 

@@ -24,6 +24,7 @@ export class CreateProduct {
       price: createProductDto.price,
       category: createProductDto.category,
       image: createProductDto.image,
+      imageKey: createProductDto.imageKey,
     });
 
     this.productRepository.create(product);

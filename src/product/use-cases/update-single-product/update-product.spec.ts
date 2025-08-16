@@ -11,6 +11,7 @@ const makeProductProps = () => ({
   price: 100,
   category: 'Old Category',
   image: 'old.png',
+  imageKey: 'products/imageKey',
 });
 
 describe('UpdateProduct', () => {
