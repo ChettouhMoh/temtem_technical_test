@@ -20,7 +20,8 @@
     "paths": {
       "@product/*": ["src/product/*"],
       "@persistence/*": ["src/persistence/*"],
-      "@auth/*": ["src/auth/*"]
+      "@auth/*": ["src/auth/*"],
+      "@attachment/*": ["src/attachment/*"]
     }
   }
 }
