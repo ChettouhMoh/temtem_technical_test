@@ -1,8 +1,11 @@
 import { IProductRepository } from '../../ports/product.repository.interface';
 import { CreateProductDto } from './create-product.dto';
 import { Product } from '../../domain/product';
-import { Controller, Inject, Post, Body } from '@nestjs/common';
+import { Controller, Inject, Post, Body, UseGuards } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';
+import { RequireRoles } from '@auth/infra/decorators/decorators';
+import { UserRolesGuard } from '@auth/infra/guards/role.guard';
+import { Role } from '@auth/domain/user-context';
 
 @ApiTags('Products') // Groups all endpoints under "Products"
 @Controller('products')
@@ -17,6 +20,8 @@ export class CreateProduct {
   @ApiResponse({ status: 201, description: 'Product successfully created' })
   @ApiResponse({ status: 400, description: 'Invalid input data' })
   @ApiBody({ type: CreateProductDto }) // Shows DTO schema in Swagger
+  @RequireRoles(Role.Owner)
+  @UseGuards(UserRolesGuard)
   async execute(@Body() createProductDto: CreateProductDto): Promise<void> {
     const product = Product.createNew({
       name: createProductDto.name,

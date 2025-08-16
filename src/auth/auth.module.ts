@@ -4,5 +4,6 @@ import { Login } from './use-cases/login/login.controller';
 
 @Module({
   controllers: [Register, Login],
+  providers: [],
 })
 export class AuthModule {}
