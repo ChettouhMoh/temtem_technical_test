@@ -1,51 +1,27 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { randomUUID } from 'crypto';
+import { mock_Product } from '@product/domain/product.mock';
 import { Product } from 'src/product/domain/product';
 import { IProductRepository } from 'src/product/ports/product.repository.interface';
 
 @Injectable()
 export class ProductRepositoryInMemory implements IProductRepository {
   private products: Product[] = [
-    Product.restoreExisting(
-      {
-        name: 'Sample Product',
-        description: 'This is a sample product',
-        price: 100,
-        category: 'Electronics',
-        image: 'https://example.com/sample-product.jpg',
-      },
-      randomUUID(),
-    ),
-    Product.restoreExisting(
-      {
-        name: 'Sample Product 2',
-        description: 'This is a sample product',
-        price: 120,
-        category: 'Books',
-        image: 'https://example.com/sample-product.jpg',
-      },
-      randomUUID(),
-    ),
-    Product.restoreExisting(
-      {
-        name: 'Sample Product 3',
-        description: 'This is a sample product',
-        price: 80,
-        category: 'Clothes',
-        image: 'https://example.com/sample-product.jpg',
-      },
-      randomUUID(),
-    ),
-    Product.restoreExisting(
-      {
-        name: 'Sample Product 4',
-        description: 'This is a sample product',
-        price: 60,
-        category: 'Books',
-        image: 'https://example.com/sample-product.jpg',
-      },
-      randomUUID(),
-    ),
+    mock_Product({
+      price: 100,
+      category: 'Electronics',
+    }),
+    mock_Product({
+      price: 150,
+      category: 'Books',
+    }),
+    mock_Product({
+      price: 120,
+      category: 'Electronics',
+    }),
+    mock_Product({
+      price: 300,
+      category: 'Books',
+    }),
   ];
 
   create(product: Product): Promise<void> {
@@ -93,7 +69,6 @@ export class ProductRepositoryInMemory implements IProductRepository {
 
   update(id: string, product: Partial<Product>): Promise<void> {
     const existingProductIndex = this.products.findIndex((p) => p.id === id);
-
     const existingProduct = this.products[existingProductIndex];
     const updatedProduct = Object.assign(existingProduct, product);
     this.products[existingProductIndex] = updatedProduct;
