@@ -22,6 +22,8 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { memoryStorage } from 'multer';
 import { UploadAttachmentResponse } from './upload-attachment.dto';
 import { IAttachmentStorage } from '@attachment/ports/attachement.repository.interface';
+import { Role } from '@auth/domain/user-context';
+import { RequireRoles } from '@auth/infra/decorators/decorators';
 
 class UploadAttachmentBodyDto {
   // Optional folder/namespace at provider side
@@ -59,6 +61,7 @@ export class UploadAttachmentController {
       limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
     }),
   )
+  @RequireRoles(Role.Owner)
   async execute(
     @UploadedFile(
       new ParseFilePipe({

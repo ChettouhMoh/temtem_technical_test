@@ -1,15 +1,18 @@
 import * as bcrypt from 'crypto';
+import { Role } from './user-context';
 
 interface UserProps {
   username: Username;
   email: Email;
   passwordHash: PasswordHash;
+  role: Role;
 }
 
 interface UserPayload {
   username: string;
   email: string;
   passwordHash: string;
+  role: Role;
 }
 
 class PasswordHash {
@@ -84,6 +87,7 @@ export class User {
         username: new Username(props.username),
         email: new Email(props.email),
         passwordHash: PasswordHash.fromHash(props.passwordHash),
+        role: props.role,
       },
       id,
     );
@@ -97,6 +101,7 @@ export class User {
       username: new Username(props.username),
       email: new Email(props.email),
       passwordHash: PasswordHash.fromPlainText(props.password),
+      role: Role.Guest,
     });
   }
 
@@ -110,5 +115,8 @@ export class User {
 
   get email(): string {
     return this.props.email.value;
+  }
+  get role(): Role {
+    return this.props.role;
   }
 }

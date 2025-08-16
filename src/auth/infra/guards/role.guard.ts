@@ -22,9 +22,7 @@ export class UserRolesGuard implements CanActivate {
     ]);
 
     if (!Array.isArray(requiredRoles) || requiredRoles.length === 0) {
-      throw new Error(
-        '@RequireRoles decorator cannot be used without specifying at least one role',
-      );
+      return true;
     }
 
     const request = context.switchToHttp().getRequest();

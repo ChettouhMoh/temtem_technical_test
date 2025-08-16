@@ -1,3 +1,5 @@
+import { Role } from '@auth/domain/user-context';
+import { RequireRoles } from '@auth/infra/decorators/decorators';
 import {
   BadRequestException,
   Controller,
@@ -23,6 +25,7 @@ export class DeleteProduct {
     type: String,
     description: 'The ID of the product to delete',
   })
+  @RequireRoles(Role.Owner)
   async execute(@Param('id') id: string): Promise<void> {
     try {
       await this.productRepository.delete(id);

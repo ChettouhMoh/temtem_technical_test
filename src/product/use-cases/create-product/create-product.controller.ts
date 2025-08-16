@@ -21,7 +21,6 @@ export class CreateProduct {
   @ApiResponse({ status: 400, description: 'Invalid input data' })
   @ApiBody({ type: CreateProductDto }) // Shows DTO schema in Swagger
   @RequireRoles(Role.Owner)
-  @UseGuards(UserRolesGuard)
   async execute(@Body() createProductDto: CreateProductDto): Promise<void> {
     const product = Product.createNew({
       name: createProductDto.name,

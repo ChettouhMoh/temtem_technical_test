@@ -44,9 +44,7 @@ export class Login {
     }
 
     // set cookie to the client
-    const payload = { id: user.id, email: user.email };
-    res.cookie('auth-session', payload, {
-      httpOnly: true,
-    });
+    res.cookie('userId', user.id, { httpOnly: true });
+    res.cookie('role', user.role, { httpOnly: true });
   }
 }

@@ -9,6 +9,8 @@ import {
 import { IProductRepository } from '@product/ports/product.repository.interface';
 import { UpdateProductRequest } from './update-product.dto';
 import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
+import { RequireRoles } from '@auth/infra/decorators/decorators';
+import { Role } from '@auth/domain/user-context';
 
 @ApiTags('Products')
 @Controller('products')
@@ -21,6 +23,7 @@ export class UpdateProduct {
   @Put(':id')
   @ApiOperation({ summary: 'Update a product by ID' })
   @ApiParam({ name: 'id', type: String, description: 'The ID of the product' })
+  @RequireRoles(Role.Owner)
   async execute(
     @Param('id') id: string,
     @Body() request: UpdateProductRequest,

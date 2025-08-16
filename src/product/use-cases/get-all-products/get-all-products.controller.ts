@@ -13,6 +13,8 @@ import {
   GetAllProductsRequest,
   GetAllProductsResponse,
 } from './get-all-products.dto';
+import { RequireRoles } from '@auth/infra/decorators/decorators';
+import { Role } from '@auth/domain/user-context';
 
 @ApiTags('Products')
 @Controller('products')
@@ -59,6 +61,7 @@ export class GetAllProducts {
     enum: ['asc', 'desc'],
     example: 'asc',
   })
+  @RequireRoles(Role.Owner, Role.Guest)
   async execute(
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
     @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number,
