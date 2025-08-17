@@ -3,7 +3,7 @@ name: Deploy to Render
 on:
   push:
     branches:
-      - main # Deploy only when pushing to main
+      - main
 
 jobs:
   deploy:
@@ -15,17 +15,18 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18
-          cache: 'npm'
+          node-version: 20
 
       - name: Install Dependencies
         run: npm install --legacy-peer-deps
 
-      - name: Run All Tests
+      - name: Run Tests
         run: npm run test:all
 
+      - name: Build Project
+        run: npm run build
+
       - name: Deploy to Render
-        if: success()
         uses: render-examples/deploy-action@v1
         with:
           serviceId: ${{ secrets.RENDER_SERVICE_ID }}
