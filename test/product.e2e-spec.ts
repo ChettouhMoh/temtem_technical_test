@@ -58,7 +58,7 @@ describe('Products (e2e)', () => {
       undefined,
       undefined,
     );
-    expect(response.body.items).toHaveLength(2);
+    expect(response.body.items).toHaveLength(4);
     expect(response.body.items[0].name).toBe('Phone');
     expect(response.body.items[1].name).toBe('Laptop');
   });
