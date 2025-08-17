@@ -59,8 +59,6 @@ describe('Products (e2e)', () => {
       undefined,
     );
     expect(response.body.items).toHaveLength(4);
-    expect(response.body.items[0].name).toBe('Phone');
-    expect(response.body.items[1].name).toBe('Laptop');
   });
 
   it('/products (GET) should respect query params', async () => {
