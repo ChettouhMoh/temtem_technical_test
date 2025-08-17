@@ -45,4 +45,8 @@ export class CloudinaryAttachmentAdapter implements IAttachmentStorage {
       key: result.public_id,
     };
   }
+
+  async delete(key: string): Promise<void> {
+    await this.cloudinary.uploader.destroy(key);
+  }
 }

@@ -7,9 +7,11 @@ import { APP_GUARD } from '@nestjs/core';
 import { UserRolesGuard } from '@auth/infra/guards/role.guard';
 import { AuthModule } from '@auth/auth.module';
 
+import { DeleteAttachmentController } from './use-cases/delete-attachment/delete-attachment.controller';
+
 @Module({
   imports: [AuthModule],
-  controllers: [UploadAttachmentController],
+  controllers: [UploadAttachmentController, DeleteAttachmentController],
   providers: [
     { provide: IAttachmentStorage, useClass: CloudinaryAttachmentAdapter },
     CloudinaryProvider,

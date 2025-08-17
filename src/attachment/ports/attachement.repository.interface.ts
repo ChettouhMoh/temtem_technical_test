@@ -10,6 +10,8 @@ export interface IAttachmentStorage {
     mimeType: string;
     folder?: string;
   }): Promise<UploadResult>;
+
+  delete(key: string): Promise<void>;
 }
 
 export const IAttachmentStorage = Symbol('IAttachmentStorage');
