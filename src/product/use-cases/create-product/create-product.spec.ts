@@ -1,30 +1,20 @@
-import { TestingModule, Test } from '@nestjs/testing';
 import { CreateProduct } from './create-product.controller';
 import { CreateProductDto } from './create-product.dto';
 import { Product } from '../../domain/product';
 import { IProductRepository } from '../../ports/product.repository.interface';
-import { createMock } from '@golevelup/ts-jest';
 
-describe('CreateProduct Controller', () => {
+describe('CreateProduct Controller (pure unit)', () => {
   let controller: CreateProduct;
   let productRepository: jest.Mocked<IProductRepository>;
 
-  beforeEach(async () => {
-    const mockProductRepository: jest.Mocked<IProductRepository> =
-      createMock<IProductRepository>();
+  beforeEach(() => {
+    // create a manual mock of the repository
+    productRepository = {
+      create: jest.fn(),
+    } as unknown as jest.Mocked<IProductRepository>;
 
-    const module: TestingModule = await Test.createTestingModule({
-      controllers: [CreateProduct],
-      providers: [
-        {
-          provide: IProductRepository,
-          useValue: mockProductRepository,
-        },
-      ],
-    }).compile();
-
-    controller = module.get<CreateProduct>(CreateProduct);
-    productRepository = module.get(IProductRepository);
+    // instantiate the controller directly
+    controller = new CreateProduct(productRepository);
   });
 
   it('should save a new product', async () => {
