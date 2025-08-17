@@ -26,8 +26,6 @@ jobs:
       - name: Build Project
         run: npm run build
 
+      # 🚀 Trigger Render Deployment
       - name: Deploy to Render
-        uses: render-examples/deploy-action@v1
-        with:
-          serviceId: ${{ secrets.RENDER_SERVICE_ID }}
-          apiKey: ${{ secrets.RENDER_API_KEY }}
+        run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK }}
