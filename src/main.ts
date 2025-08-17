@@ -30,14 +30,6 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api/docs', app, document); // docs available at http://localhost:3000/api/docs
 
-  app.useGlobalPipes(
-    new ValidationPipe({
-      stopAtFirstError: true,
-      whitelist: true,
-      forbidNonWhitelisted: true,
-    }),
-  );
-
   await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();
